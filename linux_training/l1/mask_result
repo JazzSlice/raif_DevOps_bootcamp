@@ -1,0 +1,62 @@
+-rw-r--r--. 1 root root 386 Jul 20  2022 /etc/hosts
+
+ls -l /etc/host* >> mask_result
+-rw-r--r--. 1 root root   9 Jul 20  2022 /etc/host.conf
+-rw-r--r--. 1 root root   1 May  4  2012 /etc/hostname
+-rw-r--r--. 1 root root 386 Jul 20  2022 /etc/hosts
+
+ls -l /etc/[mnv]*.conf >> mask_result
+-rw-r--r--. 1 root root 5235 Jul 22  2022 /etc/man_db.conf
+-rw-r--r--. 1 root root  782 Jul 21  2022 /etc/mke2fs.conf
+-rw-r--r--. 1 root root 2620 Oct 24 09:51 /etc/mtools.conf
+-rw-r--r--. 1 root root 1468 Jan 21 19:02 /etc/nfs.conf
+-rw-r--r--. 1 root root 3604 Jan 21 19:02 /etc/nfsmount.conf
+lrwxrwxrwx. 1 root root   29 Jan  3 07:29 /etc/nsswitch.conf -> /etc/authselect/nsswitch.conf
+-rw-rw-r--. 1 root root   37 May  4  2012 /etc/vconsole.conf
+
+ls -l /etc/[!a-k]*.conf >> mask_result
+-rw-r--r--. 1 root root    28 Jan 11 07:55 /etc/ld.so.conf
+-rw-r-----. 1 root root   191 Feb  9 18:32 /etc/libaudit.conf
+-rw-r--r--. 1 root root  2393 Sep 23  2022 /etc/libuser.conf
+-rw-r--r--. 1 root root    17 Jun 18  2022 /etc/locale.conf
+-rw-r--r--. 1 root root   493 Apr 16  2021 /etc/logrotate.conf
+-rw-r--r--. 1 root root  5235 Jul 22  2022 /etc/man_db.conf
+-rw-r--r--. 1 root root   782 Jul 21  2022 /etc/mke2fs.conf
+-rw-r--r--. 1 root root  2620 Oct 24 09:51 /etc/mtools.conf
+-rw-r--r--. 1 root root  1468 Jan 21 19:02 /etc/nfs.conf
+-rw-r--r--. 1 root root  3604 Jan 21 19:02 /etc/nfsmount.conf
+lrwxrwxrwx. 1 root root    29 Jan  3 07:29 /etc/nsswitch.conf -> /etc/authselect/nsswitch.conf
+-rw-r--r--. 1 root root   441 Dec  2 20:48 /etc/opensc.conf
+lrwxrwxrwx. 1 root root    16 Dec  2 20:49 /etc/opensc-x86_64.conf -> /etc/opensc.conf
+-rw-r--r--. 1 root root   263 Apr  4  2021 /etc/passwdqc.conf
+-rw-r--r--. 1 root root  4937 Feb  1 11:12 /etc/php-fpm.conf
+-rw-r--r--. 1 root root  1787 Jul 21  2022 /etc/request-key.conf
+lrwxrwxrwx. 1 root root    39 Sep 24  2022 /etc/resolv.conf -> ../run/systemd/resolve/stub-resolv.conf
+-rw-r--r--. 1 root root   458 Oct 21 12:47 /etc/rsyncd.conf
+-rw-r--r--. 1 root root  5620 Jun  3  2022 /etc/rygel.conf
+-rw-r--r--. 1 root root   216 Aug  3  2022 /etc/sestatus.conf
+-rw-r-----. 1 root root  4573 Jan 19 16:37 /etc/sudo.conf
+-rw-r--r--. 1 root root   180 Jul 23  2022 /etc/swtpm-localca.conf
+-rw-r--r--. 1 root root   289 Jul 23  2022 /etc/swtpm_setup.conf
+-rw-r--r--. 1 root root   449 Feb  7 18:05 /etc/sysctl.conf
+-rw-r-----. 1 root tss   7046 Jul 23  2022 /etc/tcsd.conf
+-rw-r--r--. 1 root root    45 Apr 23  2022 /etc/Trolltech.conf
+-rw-r--r--. 1 root root   938 Sep  9  2019 /etc/ts.conf
+-rw-r--r--. 1 root root   616 Dec 27 13:55 /etc/updatedb.conf
+-rw-r--r--. 1 root root  1689 Jul 23  2022 /etc/uresourced.conf
+-rw-r--r--. 1 root root  1523 Jul 23  2022 /etc/usb_modeswitch.conf
+-rw-rw-r--. 1 root root    37 May  4  2012 /etc/vconsole.conf
+-rw-r--r--. 1 root root   817 Jul 21  2022 /etc/xattr.conf
+-rw-r--r--. 1 root root 16820 Feb 22 02:53 /etc/zabbix_agentd.conf
+
+ls -l /etc/?[i]*.conf >> mask_result
+-rw-r-----. 1 root root  191 Feb  9 18:32 /etc/libaudit.conf
+-rw-r--r--. 1 root root 2393 Sep 23  2022 /etc/libuser.conf
+
+ls -l /etc/*[!A-Za-z0-9] >> mask_result
+-rw-r--r--. 1 root root 1092 Apr  3 10:09 /etc/group-
+----------. 1 root root  892 Apr  3 10:09 /etc/gshadow-
+-rw-r--r--. 1 root root 2739 Jan  5 06:44 /etc/passwd-
+----------. 1 root root 1283 Jan  5 06:44 /etc/shadow-
+-rw-r--r--. 1 root root    0 Jul 16  2021 /etc/subgid-
+-rw-r--r--. 1 root root    0 Jul 16  2021 /etc/subuid-

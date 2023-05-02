@@ -1,0 +1,16 @@
+● crond.service - Command Scheduler
+     Loaded: loaded (/etc/systemd/system/crond.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2023-05-02 22:16:14 MSK; 2min 17s ago
+   Main PID: 3993 (crond)
+      Tasks: 1 (limit: 2225)
+     Memory: 996.0K
+        CPU: 36ms
+     CGroup: /system.slice/crond.service
+             └─3993 /usr/sbin/crond -n
+
+May 02 22:16:14 fedora systemd[1]: Started crond.service - Command Scheduler.
+May 02 22:16:14 fedora crond[3993]: (CRON) STARTUP (1.6.1)
+May 02 22:16:14 fedora crond[3993]: (CRON) INFO (Syslog will be used instead of sendmail.)
+May 02 22:16:14 fedora crond[3993]: (CRON) INFO (RANDOM_DELAY will be scaled with factor 60% if used.)
+May 02 22:16:14 fedora crond[3993]: (CRON) INFO (running with inotify support)
+May 02 22:16:14 fedora crond[3993]: (CRON) INFO (@reboot jobs will be run at computer's startup.)

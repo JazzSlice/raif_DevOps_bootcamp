@@ -1,0 +1,199 @@
+PROCESS
+ - replica of programm, executing in local memory set.
+Each process could born child-processes, and each process could have only one parent-process
+PID - process ID
+PPID - parent process ID
+
+TYPES OF PROCESS
+- interactive (process with interactive thread of in/out)
+- backrun (process ran by detouched mode, without using terminal)
+- daemons (system-processes, backrun, managing by systemd)
+
+STATES of process
+- running
+- waiting (f.e. input)
+- finished
+- zombie
+
+# for search PID by p-name use pidof util
+pidof -s systemd
+pidof -s sshd
+pidof -s bash
+
+# list of runnig precosses getting by ps util
+options:
+	-f (extented info about current user precosses)
+	-a (process info for all users)
+	-x (excluding terminals process)
+	-u <username> (search process for related user)
+	-aux (use with grep)
+ps -aux | grep 'sshd'
+
+TOP
+# <top> util allow get info about processes in real time
+# sort output by:
+- Shift P - CPU load
+- Shift M - memory
+- Shift V - in tree implementation
+- t (output all info)
+- m (output memory info)
+- f (enter column configuration menu)
+- k (kill process)
+- c (extented output about parent process command)
+- h (help)
+- q (quit)
+
+PROCESS MANAGMENT
+# process managment provided by sending signals to working process
+# util <kill> allow send signal to process
+kill -l (full list of signals)
+manage process by name - pkill <opt> <name of process>
+
+ 1) SIGHUP	 2) SIGINT	 3) SIGQUIT	 4) SIGILL	 5) SIGTRAP
+ 6) SIGABRT	 7) SIGBUS	 8) SIGFPE	 9) SIGKILL	10) SIGUSR1
+11) SIGSEGV	12) SIGUSR2	13) SIGPIPE	14) SIGALRM	15) SIGTERM
+16) SIGSTKFLT	17) SIGCHLD	18) SIGCONT	19) SIGSTOP	20) SIGTSTP
+21) SIGTTIN	22) SIGTTOU	23) SIGURG	24) SIGXCPU	25) SIGXFSZ
+26) SIGVTALRM	27) SIGPROF	28) SIGWINCH	29) SIGIO	30) SIGPWR
+31) SIGSYS	34) SIGRTMIN	35) SIGRTMIN+1	36) SIGRTMIN+2	37) SIGRTMIN+3
+38) SIGRTMIN+4	39) SIGRTMIN+5	40) SIGRTMIN+6	41) SIGRTMIN+7	42) SIGRTMIN+8
+43) SIGRTMIN+9	44) SIGRTMIN+10	45) SIGRTMIN+11	46) SIGRTMIN+12	47) SIGRTMIN+13
+48) SIGRTMIN+14	49) SIGRTMIN+15	50) SIGRTMAX-14	51) SIGRTMAX-13	52) SIGRTMAX-12
+53) SIGRTMAX-11	54) SIGRTMAX-10	55) SIGRTMAX-9	56) SIGRTMAX-8	57) SIGRTMAX-7
+58) SIGRTMAX-6	59) SIGRTMAX-5	60) SIGRTMAX-4	61) SIGRTMAX-3	62) SIGRTMAX-2
+63) SIGRTMAX-1	64) SIGRTMAX
+
+1 SIGHUP - break connection with managing terminal (re-read conf for daemons
+2 SIGINT - break process (Ctrl C)
+3 SIGQUIT - exit from programm (Ctrl D)
+9 SIGKILL - instantly end process (couldn't be catched)
+15 SIGTERM - end process (could be catched)
+18 SIGCOUNT - restart (start from breaking point) process
+20 SIGSTP - pause process
+
+SERVICE MANAGMENT
+# systemd - system & service manager, executing as process (PID 1)
+# arrives instead init (set of shell scripts)
+# syntax:
+systemctl <command> <unit> [unit..]
+
+set of commands:
+	start (start service)
+	stop (stop service)
+	restart (stop -> start)
+	reload (reinitialisation -> reread config)
+	enable (set auto-start for service when OS core starting)
+	disable (disable auto-start)
+	status (get unit statement)
+	cat (get context of init file)
+	daemon-reload (reread config of systemd, unit not required)
+
+UNITS
+# - .ini file, which contain set of parameters for systemd to manage services..
+# paths & prior:
+1) /etc/systemd/system - units, created by administrator
+2) /run/systemd/system - units, created in runtime
+3) usr/lib/systemd/system - units of installed packages (apache, nginx..)
+
+# get full list of types: systemctl -t help
+.service - service managment for OS
+.timer - run by schedule
+.target - groupping units (levels of launching)
+.mount - mounting block-device
+
+# get list of started units: systemctl list-units <filter>
+# example of filter: --type=service, state=active, --all
+
+STRUCTURE OF UNIT [.ini]
+[Unit] - section contain metadata of dervices & dependencies from other services
+vars:
+	Description
+	Documentation
+	After
+	Requires
+	Wants
+[Service] - section contain commands & parameters of launching
+vars:
+	Type
+	User
+	Group
+	Environment
+	ExecStart
+	ExecStop
+	ExecReload
+	Restart
+Service types:
+	simple - do cmd from ExecStart & stay as process in system
+	forking - while executing make child processes, managing child  processes by their status
+	one-shot - one run per cmd, deleted after execution
+	notify
+[Install] - section contains description of run-level of launching service
+vars:
+	WantedBy (set target)
+	Alias
+Target types:
+	poweroff
+	rescue
+	reboot
+	multi-user
+	graphical
+[Mount] - section set what & where mount (for .mount)
+
+Unit structure:
+----------------------------
+# /usr/lib/systemd/system/sshd.service
+[Unit]
+Description=OpenSSH server daemon
+Documentation=man:sshd(8) man:sshd_config(5)
+After=network.target sshd-keygen.target
+Wants=sshd-keygen.target
+
+[Service]
+Type=notify
+EnvironmentFile=-/etc/sysconfig/sshd
+ExecStart=/usr/sbin/sshd -D $OPTIONS
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+RestartSec=42s
+
+[Install]
+WantedBy=multi-user.target
+----------------------------
+
+INSTALLATION & UPDATE OF SOFTWARE
+RPM - redHat package manager
+Name:
+<name of programm><version><release number><tag & architecture>
+	bash-4.4.20-2.el8.x86_64.rpm
+
+user-friendly fronted, using instead rpm - dnf / yum
+dnf syntax:
+dnf <cmd> <package>
+info: dnf info <name>
+list of installed packages: dnf list --installed
+
+DNF_CMDS:
+install: dnf install <name>
+remove: dnf remove <name>
+reinstall: dnf reinstall <name>
+update: dnf update <name>
+skip agreement part: -y [opt]
+list of packages allowed to update: dnf list --updates
+mass update: dnf update
+update kernel: dnf update -y kernel
+
+dnf install nginx -y
+nginx -v
+dnf list --installed | grep 'kernel'
+
+REPOS
+space where packages & some meta-info are collected 
+path to repos collected: /etc/yum.repos.d
+
+ls -l /etc/yum.repos.d
+less /etc/yum.repos.d/docker-ce.repo
+
+[module] = version
+find package by name: dnf [module] search <name>
+find pkg by filename: dnf [module] provides '*bin/ping'

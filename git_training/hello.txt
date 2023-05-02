@@ -1,0 +1,3 @@
+Hello, world!
+Git is cool, bruh
+save to stash

@@ -1,0 +1,176 @@
+# show current username
+whoami
+# show current user's groups
+id
+# show how long system is working right now (+ load avg)
+uptime
+# show content of file in which stored info about OS
+cat /etc/os-releas
+
+# show awailable system interpretators
+cat /etc/shells
+# print actual interpretator via global variable
+echo $SHELL
+
+# get type of cmd (builtin / extended)
+# type echo / cat / type / uptime / docker
+type <cmd>
+# command have OPTIONS & ARGS
+# get note for command - (-h / --help) / man 
+man <cmd>
+# print actual date
+date
+# redirect output (result of execution)
+date > ./date.txt
+# use link
+<command> <link-name>
+
+----FILE TYPES----
+- file (regular)
+- catalog (dir, also file, everything is file)
+- device (block or symbolic in /dev/ catalog)
+- links (soft / hard)
+- fifo (queues, socket ..)
+
+# join to catalog = mounting
+
+# file is iNode = set of blocks on disk, which is available for reading & have instructions
+----iNode (struct)----
+- owner
+- date of creation
+- size
+- links to sectors on disk
+- level of availability
+- could have one or more hard links to iNode (iNode couldn't be rewriten while at list one hard-link to iNode is exist)
+- others excluding name (collected in hard-link and also link to iNode)
+
+----Directory----
+- text-file
+- set of hard-links
+
+----FHS (Filesystem Hierarchy Standart----
+# describe goal of every existing catalog
+- bin / sbin (executable files which we using (bin - user / sbin - root))
+- boot (images of OS (kernel/core) which loading while system booting)
+- dev (drivers for devices)
+- etc (configuration files)
+- home (catalog for users excluding root)
+- mnt (mounting objects)
+- opt (catalog to store user-info)
+- root (home catalog for superuser)
+- tmp (for time-depended files)
+- usr (user-stored catalog)
+
+# absolute path - starts from root
+/etc/systemd/system/
+# relative path - starts from special characters
+~/Downloads
+./script.sh
+../sample.sh
+
+# print working directory
+pwd
+# change directory
+ch <path>
+# make directory
+# by -p option could create tree like <mkdir -p /tmp/dir/subdir/
+mkdir
+# remove directory
+rmdir
+# print content of dir
+ls <path>
+# build tree of catalog
+tree <path>
+
+# create empty file
+touch <name.ext>
+# show context of file
+cat <file> / less <name>
+# copy file
+cp <name> <path>
+# move file
+mv <name> <path>
+# remove file (-rf opt delete catalog)
+rm <name>
+# create link to iNode (hard-link) or (-s opt - soft-link)
+ln <path to file> <path to link_file>
+# ls -l -> 2-nd column show number of hard-links, which assign to object
+# created (even empty) catalog have at list 2 hard-links - '.' and '..' (to current and parent catalog)
+# after creation of hard-link in target dir created file mentioned in 2-nd parameter. By using that file you can get all info & availablities as like you use file by which link is provided
+# hard-link (like other hard-links to same obj) have same iNode atributes as target-file (owner, date-of-change, e.t.c.)
+# directories have hard-links to each-other
+# cause you can't assign catalog to hard-link by self
+
+----MASKS----
+- ? (host? get links to objects with one hidden symbol: hosts, hostd, host3..)
+- * (host* get links to obj with various hidden symbols: hosts, host, host_sample..)
+- [] ([mnv]*.conf get links to obj started with symbol in range: main.conf, n.conf, vnm_mnv.conf..)
+- [!] ([!a-k]*.conf get links to obj excluding range symbols: less.conf, ya.conf, m.conf..)
+
+# command <find>
+find [options] <path> [criteria] [cmd]
+- options (-P don't follow links / -L check links)
+- path (pwd, or select sample catalogs)
+- criterias:
+	-type:
+		-f file
+		-d directory
+		-l link
+	-name:
+		- actual name
+		- regular expression
+	-size:
+		- 2G
+		- 2M
+		- 2k
+		- -2k (less than 2 kilobytes)
+		- +2k (more tnah 2 kilobytes)
+	-owner:
+		- user
+		- group
+	-date:
+		- -mtime 3 (3 days from last change date)
+		- -mmin 3 (3 minutes since last change)
+		- -atime/amin 3 (3 days/minutes since permitions arrived)
+	-empty (emplty files & dirs)
+	-maxdepth (number of max catalog layers command could drop down)
+	!<criteria> - invert
+	- regex 'pattern'
+- cmd: (show less info by default)
+	-ls (show more info about objects)
+	-delete (delete found objects)
+	-exec <cmd>{} <parameter>\; (do cmd with output result of find)
+
+----FLOWS----
+num of descriptor	flow		assign
+0			stdin		keyboard
+1			stdout		terminal
+2			stderr		terminal (errors)
+
+we could redirect flows by:
+< file (use file as stdin)
+> file (use stdout as stdin)
+>> file (same but previous data stay in actual condition)
+tee files (stdout to terminal & files)
+& > file (all flows to file)
+1>>file 2>>err_file (stdout to file, stderr to err_file)
+
+----FILTER----
+# sorting from a to z
+sort [-r - reverse]
+# print uniq strings
+uniq [-d duplicates, -c quantity]
+# count quantity of:
+wc [-l lines, -m symbols, -w words]
+# print first part of file
+head [-n 4 (first 4 strings), -c 128 (first 128 bytes)]
+# print last part of file
+tail [-n 4, -c 128, -f (follow new written strings to console)
+# print (output) file by page
+more / less
+
+----PIPE----
+# stdout of p1 is stdin of p2 via usage of pipe '|'
+prog1 | prog2
+# count quantity of rpm packages
+rpm -qa | wc -l

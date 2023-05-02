@@ -1,0 +1,117 @@
+# settings
+git config --global user.name "Username"
+git config --global user.email <email>
+git config --global http.sslverify false
+
+# check list of settings
+git config --list
+
+# Show history of repo
+git log [opt] 
+--oneline (short info about commit)
+--graph (view of history)
+--stat (more info about commit)
+--patch (delta of commit)
+
+# show info about object under VC of HEAD
+git show [sample object (commit) pointer mentioned as parameter of cmd]
+
+# remove from index
+git restore --staged <filename>
+# restore to last (HEAD) commit condition
+git restore <file>
+# restore to sample commit condition
+git checkout <num of commit> <filename>
+
+# update (change condition) of last commit
+git add <forgotten_file>
+git commit --amend
+
+# reverse to previous stages (commits)
+# (move pointer to HEAD / all changes collected in index)
+git reset --soft <commit hash>
+# (move pointer to HEAD / all changes collected in work_field)
+git reset --mixed <commit hash>
+# (move pointer to HEAD / all changes wasted)
+<<<<<<< Updated upstream
+=======
+<<<<<<< Updated upstream
+git reset --hard
+=======
+>>>>>>> Stashed changes
+git reset --hard <commit hash>
+
+# create branch
+git branch <b_name>
+# switch between branches (use '-' instead <b_name> to switch to prev branch)
+git checkout <b_name> 
+# print info about branches
+git branch
+# merge branches (from mentioned to current)
+git merge <mentioned b_name>
+# switch to branch (if not created -> create & switch)
+git chechout -b <b_name>
+# disable rolling-merge (no fast-forward - create new commit instead replace HEAD to feature mentioned branch)
+<<<<<<< Updated upstream
+git merge -noff <mentioned b_name>
+=======
+git merge --no-ff <mentioned b_name>
+
+# clone from remote repo
+git clone <link>
+# load history of current branch (pull = fetch + merge)
+git pull
+# send changes from local to remote repo
+git push origin <b_name>
+
+# send unlinked changes to local cache
+git stash
+# take changes from cache
+git stash pop
+# clean up cache
+git stash drop
+
+# collect sample commits to latest commit for new branch (current)
+git cherry-pick <commit_hash> <commit_hash1>..
+
+# rebase for save actual condition of sample (feature) branch
+git checkout master	A--B--C--D
+git pull		     \E--F
+git checkout <b_name>	A--B--C--D
+git rebase master		  \E--F
+# merge got feature with branch
+git checkout master
+git merge <b_name>
+
+----GIT FLOW----
+- 2 main branches (master / develop)
+- master is stable, used commonly for releases
+- features linked to develop branch
+- release branch taking updates from develop & used in merge from master
+
+----GITHUB FLOW----
+- contain only one stable master branch - other is features
+- features is fork of master
+- main repo not contain feature branches
+
+----GITLAB FLOW----
+- one stable branch - master
+- peronal branch for each release (stable for each release)
+- fixes for each branch provided by commits (non merging)
+
+----TRUNC BASE DEVELOPMENT----
+- test features for high-speed iterations and releases
+- avg live-time of branch - 2 days (excluding master)
+- feature flags allow enable ready to prod features
+- branch by abstraction (pop-up interface for disabled feature)
+- continuos code review (fast code review f.e. with special tools)
+- master ready to prod in each moment of time
+- no commits in release branch
+
+----------BASICS - PRACTICES----------
+- newer use straight push to master
+- commit message should have a view of commit
+- avoid change of history in master branch
+- make rebase for feature-branch more often
+- do not push auto-generated files (use .gitignore)
+- know your tool

@@ -1,0 +1,13 @@
+systemctl status crond
+systemctl stop crond
+systemctl status crond
+systemctl disable crond
+systemctl reboot
+systemctl status crond
+systemctl start crond
+cp /usr/lib/systemd/system/crond.service /etc/systemd/system/
+
+systemctl daemon-reload
+kill -11 $(pidof crond)
+systemctl status crond
+systemctl enable crond

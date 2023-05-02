@@ -1,0 +1,164 @@
+# collect data from data thread by exsample
+grep [options] [example] [file]
+OPTIONS:
+	-c (print quantity of matches by example)
+	-n (print numbers of strings with matches)
+	-i (disable sense to register)
+	-v (invert example / pattern)
+	-A x (print x strings after found one)
+	-B x (print x strings before found)
+	-m x (stop search after x matches)
+	-r (recursive search)
+PATTERNS:
+	'^<pattern>' (link target pattern to begin of string)
+	'<pattern>$' (link target pattern to end of string)
+	'.x.s' (sample symbol (not null))
+	'a*ron' (sample copy of previous symbol)
+	'[a-d]' (set of symbols)
+	'[^e-h]' (inverted set of symbols)
+	'\$' (hide special-symbol - ecranirovanie lul)
+
+VIM
+- :/ or ? (to command)
+	:q (exit without saving)
+	:q! (exit with force)
+	:w (save changes)
+	:wq (save & quit)
+	:N (switch to N line)
+	:set number (enable numbers of strings)
+	:set wrap (enable wrap of string)
+	:h (show help)
+	/<text> (find by pattern in text follow)
+	?<text> (find by pattern in text previous)
+	n (move to next found elem)
+	N (move back to found elem)
+	:%s/<text to find>/<text to paste>/gc
+		% - search by all file (could use string set (1-5))
+		g - do change in all found strings
+		c - accept of every change (like -y while inst pcg)
+- a, i, o, ins (to insert)
+- Esc (to normal)
+	h j k l (left, up, down, right)
+	w b (move by word to right / left)
+	d (delete symbol)
+	dd (delete string)
+	D (delete all from coursor to end of line)
+	y (copy symbol)
+	yy (copy resent string)
+	p (paste copyed)
+	u (undo last change)
+	. (make laas change again)
+
+
+----USERS----
+have UID (user ID) & GID (groud ID)
+
+TYPES
+- root (superuser by default
+	UID=0)
+- system users (for managing system processes, created automaticly 
+	UID=[1-100])
+- common users (others, created by admin
+	UID>100
+
+Info about users collected in follow files:
+- /etc/passwd (info about users in follow format:
+	"user:password:UID:GID:full_name:home_dir:login_shell")
+- /etc/group (info about groups in follow format:
+	"group:password:GID:user1,user2..")
+- /etc/shadow (info about hashed user-passwords)
+- /etc/gshadow (info about hashed group-passwords)
+
+MANAGE USERS
+- useradd [opt] [name] (create user)
+- passwd [opt] [name[ (declare password)
+- usermod [opt] [name] (change user)
+- userdel [opt] [name] (delete user)
+	1) block user
+	2) stop active processes to user
+	3) userdel -r <name>
+MANAGE FROUPS
+- groupadd [opt] [name]
+- gpasswd [opt] [name]
+- groupmod [opt] [name]
+- groupdel [opt] [name]
+
+# switch user
+su - <username>
+# exit from user context
+exit
+# execute command with context of other user (root)
+1) check actual user in /etc/sudoers in format:
+	"who where=(by_which_context) what"
+	to update file use visudo
+2) run command by "sudo <cmd>"
+
+# create chip & dale
+sudo su
+groupadd developers
+groupadd engineers
+useradd -g developers chip
+useradd -g engineers dale
+passwd --stdin chip
+passwd --stdin dale
+
+RULE-PERMISSIONS
+- r=4 (read context of file / catalog)
+- w=2 (change context of file / catalog)
+- x=1 (execute file / enter catalog)
+permissions couldbe assigned to 3 types of users:
+- u (owner)
+- g (group)
+- o (others)
+
+ls -l:
+d = type of file (dir)
+-rw-r--r-- 1 user developers
+same as 644 permission mode for file
+owner - could read & write
+group - could read
+others - could read
+owner - user
+group - developers
+
+# change owner:group (or only owner)
+chown <new_owner>:<new_group> <file>
+# change group
+chgrp <new group> <file>
+# change permissions
+chmod <new permissions> <file>
+	1) rwxrw-r--
+	2) 764
+	3) u+x go-w ugo=rwx (-R change permissions by recourcive + X for dirs)
+# NOTE
+# dirs is also files contains links to context of catalog
+# so, while permissions is changing for directory
+# w - change directory context
+# r - read filenames but not links or size
+# x - read links but not filenames
+# without filename we cannot read link
+# chmod change permissions for both types (file & catalogs)
+# if we need to make directory executable
+# we must use X instead x
+# chmod -R u+rXw,g+X,o-wx
+
+SPECIAL PERMISSIONS
+- sticky-bit (use for create multi-user dir
+	allow create, read & execute file, but not delete
+	assign as 't'
+	set:
+		chmod o+t <dirname>
+		chmod 1777)
+- SUID (use bit to allow execute file by context of creator
+	allow change id of user to id of owner before execution
+	assign as 's'
+	set:
+		chmod u+s <command>
+- SGID (use bit to allow execute file as member of owner group
+	allow change id of user group to id of owner group before execution
+	assign as 's'
+	set:
+		chmod g+s <command>
+
+
+
