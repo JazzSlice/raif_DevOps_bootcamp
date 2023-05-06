@@ -1,0 +1,136 @@
+# stop container
+docker kill <container_name>
+# rm container
+docker rm <container_name>
+# rm image
+docker rmi <image_name>
+# enter container:
+docker exec -it <container_name> bash
+
+# Update loaded image in running container:
+docker run -it ubntu:22.04 bash
+# running container in image in interactive tty 
+# update last layer of image, which available for overright
+touch <filename>
+exit
+# build image based on existing container with additionals
+docker commit <container_name> <image_name:tag>
+
+# get history of image:
+docker history <image_name>
+
+# Creating image
+# by dockerfile
+FROM <image> # base image
+ADD <source_file_rel_path> <file_name_in_cont>
+# add dependencies
+ADD requirements.txt requirements.txt
+# add cmd which run while image is creating
+RUN pip install -r requirements.txt
+# add env-variable
+ENV <variable> <value>
+# expose port for image
+EXPOSE <port>
+ENTRYPOINT <start_cmd>
+# building
+docker build <rel_path> -t <image_name_tag>
+
+# to avoid non-caching dependencies while creating image
+# after changing file
+# use directive ADD for file after other directives
+# before ENTRYPOINT
+
+# rename image:
+docker tag <path>/<folder>:<version>
+
+# get container logs
+docker logs -tail 10 <container_name>
+# or use ither _find_ samples
+
+# get stats of sample container
+docker stats <container_name>
+# get stats of all container on host - docker stats
+
+# get list of available commands
+docker help
+
+# Create network
+docker network create <name_of_network>
+# join container to network
+docker network connect <network_name> <container_name>
+# inspect network
+docker network inspect <network_name>
+# join curl container
+docker run --network <network_name> curlimages/curl <container_name>:<port>
+
+# run container with published port
+docker run -dp 0.0.0.0:<listening_host_port>:<redirected_container_port> <image_name>
+# 0.0.0.0 = listen all addresses
+
+# Data Collecting
+# create file in container before creation
+docker run -d -v <path_to_src_file>:<path_to_mounting_file> <image_name>:<tag>
+# create volume:
+docker volume create <name>
+# get list of volumes
+docker volume ls
+# inspect volume
+docker volume inspect
+# mount created volume
+docker run -dv <volume>:<path_to_mounting_file> <image>
+# rm unnecessary volume
+docker volume rm <volume_name>
+
+# Compose 
+# docker-compose commands
+docker-compose help
+# up containers by directives in docker-compose.yaml 
+docker-compose up -d
+# get list of created by compose containers
+docker-compose ps
+# restart composed containers
+docker compose restart
+# shut down containers, networks & remove them
+docker compose down
+# get logs from composed containers (with follow)
+docker compose logs -f
+
+# sample of compose_file
+# ___________________________________
+version: '<version_digit>'
+
+services: # draw down services
+  <service-1>:
+    build: #directive to build image
+      context: . # set context of image
+      dockerfile: <dockerfile_name> # set dockerfile name
+    image: <image_name>:<tag>
+    container_name: <name> # sample name for dns in local network
+    restart: always # restarts service if it drop-down
+    ports: # expose ports between netwotks
+      - "8081:8080"
+    user: "1002:1002" # set user_s id
+    environment: # set up global variables
+      - <var>=<value>
+      - INCONTAINER=False
+    volumes: # set up volumes
+      - <souce_volume>:<target_container_voluem>
+    networks: #join to network
+      - <network_name>
+
+  <service-2>:
+    image: busybox
+    command: sleep 3600 # run command after creation
+    networks:
+      - <network_name>
+
+networks:
+  <network_name>
+# __________________________________
+
+# Docker works with using of linux namespace
+# Podman has no daemons & could work with rootless users
+# Managing in podman through systemd
+# Kaniko - go_lang tool
+# build images without docker by dockerfiles
+# Multistage buildings..

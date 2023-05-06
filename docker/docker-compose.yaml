@@ -1,0 +1,24 @@
+version: '0.0'
+
+services:
+  py_app:
+    image: jazzslice/app_image:0.0.1
+    container_name: py_app
+    ports:
+      - "8080:5000"
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    networks:
+      - task_network
+
+  redis:
+    image: redis:7.2-rc1-alpine
+    restart: always 
+    ports:
+      - "6379:6379"
+    networks:
+      - task_network
+
+networks:
+  task_network:
