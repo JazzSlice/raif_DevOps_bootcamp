@@ -1,0 +1,23 @@
+---
+
+- name: "Update packages"
+  become: true
+  ansible.builtin.yum:
+    name: '*'
+    state: latest
+    exclude: docker
+    update_cache: true
+  register: result
+      
+- name: "Reboot machinee"
+  become: true
+  ansible.builtin.reboot:
+    reboot_timeout: 240
+    test_command: "whoami"
+  when: result is changed
+
+- name: "Get kernel-core versions list"
+  become: true
+  ansible.builtin.yum:
+    list: kernel-core
+  register: result

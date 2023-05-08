@@ -1,4 +1,15 @@
 # HW-playbook
 ---
-- hosts: "all"
+- name: "Update OS for localhost"
+  hosts: "servers"
+  gather_facts: true
+  connection: local
+  roles:
+    - update_os
+
+- name: "Update OS for remote host"
+  hosts: "cloud"
+  gather_facts: true
+  roles:
+    - update_os
 ...
