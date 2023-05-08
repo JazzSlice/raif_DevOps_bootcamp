@@ -1,9 +1,0 @@
-- hosts: localhost
-  become: yes
-  tasks:
-    - name: run command as user
-        command: dnf upgrade --refresh
-        become: true
-        become method: su
-        become user: root
-        become_flags: '-s /bin/bash/'
