@@ -1,1 +1,1 @@
-ansible-playbook playbook.yaml -i hosts.ini --ask-become-pass
+ansible-playbook playbook.yaml --ask-become-pass

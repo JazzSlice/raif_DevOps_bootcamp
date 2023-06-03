@@ -1,0 +1,27 @@
+---
+# tasks file for update-repos
+
+
+- name: "for RedHat based distros"
+  yum:
+    name: '*'
+    state: latest
+    exclude: docker
+    update_cache: true
+  register: result
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: "for Debian based distors"
+  apt:
+    name: '*'
+    state: latest
+    avclude: docker
+    update_cache: true
+  register: result
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: "Reboot machine"
+  ansible.builtin.reboot:
+    reboot_timeout: 240
+    text_command: "whoami"
+  when: result is changed
